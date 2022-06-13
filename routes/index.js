@@ -600,6 +600,15 @@ router.post('/extractor', body.none(), async (req, res) =>{
   if (face_urls.some(url => req.body.inputValue.includes(url))) {
     options.cookie = "fbcookies.txt"
   }
+
+  if(req.body.inputValue.includes('vk.com')){
+    delete options.proxy
+    options.sourceAddress = req.headers['x-forwarded-for'] || req.socket.remoteAddress
+  }
+
+  if(!px){
+    delete options.proxy
+  }
   
   const meta = await youtubedl(req.body.inputValue, options)
 
